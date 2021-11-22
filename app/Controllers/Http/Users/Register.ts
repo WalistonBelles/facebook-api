@@ -27,16 +27,17 @@ export default class UserRegisterController {
         message.to(email)
         message.from('contato@facebook.com', 'Facebook')
         message.subject('Criação de Conta')
-        message.htmlView('emails/register', { link })
+        message.htmlView('emails/verify-email', { link })
       })
     });
   }
 
   public async show({ params }: HttpContextContract) {
     const userKey = await UserKey.findByOrFail('key', params.key);
-    const user = await userKey.related('user').query().firstOrFail();
 
-    return user;
+    await userKey.load('user');
+
+    return userKey.user;
   }
 
   public async update({ request, response }: HttpContextContract) {
