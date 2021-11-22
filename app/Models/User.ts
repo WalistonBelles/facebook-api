@@ -1,7 +1,16 @@
 import { DateTime } from 'luxon'
 import Hash from '@ioc:Adonis/Core/Hash'
-import { column, beforeSave, BaseModel, hasMany, HasMany, hasOne, HasOne } from '@ioc:Adonis/Lucid/Orm'
-import { UserKey, File } from 'App/Models'
+import {
+  column,
+  beforeSave,
+  BaseModel,
+  hasMany,
+  HasMany,
+  hasOne,
+  HasOne
+} from '@ioc:Adonis/Lucid/Orm'
+
+import { UserKey, File, Post, Comment } from 'App/Models'
 
 export default class User extends BaseModel {
   @column({ isPrimary: true })
@@ -43,4 +52,10 @@ export default class User extends BaseModel {
     onQuery: (query) => query.where({ fileCategory: 'avatar' })
   })
   public avatar: HasOne<typeof File>
+
+  @hasMany(() => Post)
+  public posts: HasMany<typeof Post>
+
+  @hasMany(() => Comment)
+  public comments: HasMany<typeof Comment>
 }
