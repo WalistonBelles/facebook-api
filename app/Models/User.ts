@@ -12,11 +12,9 @@ import {
   ManyToMany,
   computed
 } from '@ioc:Adonis/Lucid/Orm'
-
 import { UserKey, File, Post, Comment } from 'App/Models'
 
 export default class User extends BaseModel {
-
   @column({ isPrimary: true })
   public id: number
 
@@ -42,7 +40,7 @@ export default class User extends BaseModel {
   public updatedAt: DateTime
 
   @beforeSave()
-  public static async hashPassword (user: User) {
+  public static async hashPassword(user: User) {
     if (user.$dirty.password) {
       user.password = await Hash.make(user.password)
     }
@@ -79,22 +77,21 @@ export default class User extends BaseModel {
 
   @computed()
   public get postsCount() {
-    return this.$extras.posts_count;
+    return this.$extras.posts_count
   }
 
   @computed()
   public get followersCount() {
-    return this.$extras.followers_count;
+    return this.$extras.followers_count
   }
 
   @computed()
   public get followingCount() {
-    return this.$extras.following_count;
+    return this.$extras.following_count
   }
 
   @computed()
   public get isFollowing() {
-    return this.$extras.isFollowing;
+    return this.$extras.isFollowing
   }
-
 }

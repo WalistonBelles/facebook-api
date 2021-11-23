@@ -27,7 +27,7 @@ export default class Post extends BaseModel {
   public description: string
 
   @column({ serializeAs: null })
-  public userId: string
+  public userId: number
 
   @belongsTo(() => User)
   public user: BelongsTo<typeof User>
@@ -56,12 +56,12 @@ export default class Post extends BaseModel {
       love: this.$extras.loveCount || 0,
       haha: this.$extras.hahaCount || 0,
       sad: this.$extras.sadCount || 0,
-      angry: this.$extras.angryCount || 0,
+      angry: this.$extras.angryCount || 0
     }
   }
 
   @computed()
   public get activeReaction() {
-    return this.reactions && this.reactions.length ? this.reactions[0].type : null; 
+    return this.reactions && this.reactions.length ? this.reactions[0].type : null
   }
 }

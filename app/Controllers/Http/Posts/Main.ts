@@ -31,28 +31,28 @@ export default class PostsController {
       })
 
       query.withCount('reactions', (query) => {
-        query.where('type', 'like');
-        query.as('likeCount');
+        query.where('type', 'like')
+        query.as('likeCount')
       })
 
       query.withCount('reactions', (query) => {
-        query.where('type', 'love');
-        query.as('loveCount');
+        query.where('type', 'love')
+        query.as('loveCount')
       })
 
       query.withCount('reactions', (query) => {
-        query.where('type', 'haha');
-        query.as('hahaCount');
+        query.where('type', 'haha')
+        query.as('hahaCount')
       })
 
       query.withCount('reactions', (query) => {
-        query.where('type', 'sad');
-        query.as('sadCount');
+        query.where('type', 'sad')
+        query.as('sadCount')
       })
 
       query.withCount('reactions', (query) => {
-        query.where('type', 'angry');
-        query.as('angryCount');
+        query.where('type', 'angry')
+        query.as('angryCount')
       })
 
       query.preload('reactions', () => {
@@ -64,36 +64,40 @@ export default class PostsController {
   }
 
   public async store({ request, auth }: HttpContextContract) {
-    const data = await request.validate(StoreValidator);
-    const post = await auth.user!.related('posts').create(data);
+    const data = await request.validate(StoreValidator)
+    const post = await auth.user!.related('posts').create(data)
 
-    return post;
+    return post
   }
 
   public async update({ request, response, params, auth }: HttpContextContract) {
-    const data = await request.validate(UpdateValidator);
-    const post = await Post.findOrFail(params.id);
+    const data = await request.validate(UpdateValidator)
+    const post = await Post.findOrFail(params.id)
 
     if (auth.user!.id !== post.userId) {
       return response.unauthorized()
     }
 
     await post.merge(data).save()
+
+    return post
   }
 
   public async destroy({ response, params, auth }: HttpContextContract) {
-    const post = await Post.findOrFail(params.id);
+    const post = await Post.findOrFail(params.id)
 
-    if (auth.user!.id !== post.userId)
-      return response.unauthorized();
-
-    await post.load('media');
-
-    if (post.media) {
-      fs.unlinkSync(Application.tmpPath('uploads', post.media.fileName));
-      await post.media.delete();
+    if (auth.user!.id !== post.userId) {
+      return response.unauthorized()
     }
 
-    await post.delete();
+    await post.load('media')
+
+    if (post.media) {
+      fs.unlinkSync(Application.tmpPath('uploads', post.media.fileName))
+
+      await post.media.delete()
+    }
+
+    await post.delete()
   }
 }
