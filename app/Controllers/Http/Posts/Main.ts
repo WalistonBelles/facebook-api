@@ -1,7 +1,7 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { StoreValidator, UpdateValidator } from 'App/Validators/Post/Main'
 import { User, Post } from 'App/Models'
-import { Application } from '@ioc:Adonis/Core/Application'
+import Application from '@ioc:Adonis/Core/Application'
 import fs from 'fs'
 
 export default class PostsController {
@@ -28,6 +28,35 @@ export default class PostsController {
           query.select(['id', 'name', 'username'])
           query.preload('avatar')
         })
+      })
+
+      query.withCount('reactions', (query) => {
+        query.where('type', 'like');
+        query.as('likeCount');
+      })
+
+      query.withCount('reactions', (query) => {
+        query.where('type', 'love');
+        query.as('loveCount');
+      })
+
+      query.withCount('reactions', (query) => {
+        query.where('type', 'haha');
+        query.as('hahaCount');
+      })
+
+      query.withCount('reactions', (query) => {
+        query.where('type', 'sad');
+        query.as('sadCount');
+      })
+
+      query.withCount('reactions', (query) => {
+        query.where('type', 'angry');
+        query.as('angryCount');
+      })
+
+      query.preload('reactions', () => {
+        query.where('userId', auth.user!.id).first()
       })
     })
 
