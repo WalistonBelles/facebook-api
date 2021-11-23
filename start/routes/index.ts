@@ -5,6 +5,9 @@ import './uploads';
 import './posts';
 import './comments';
 import './reactions';
+import './follows';
+import './follows';
+import './profiles';
 
 Route.get('/', async () => {
   return { hello: 'world' }
