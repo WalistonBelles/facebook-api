@@ -10,8 +10,6 @@ export default class UserAvatarController {
     const avatar = await Database.transaction(async (trx) => {
       const { file } = await request.validate(UpdateValidator)
 
-      console.log(auth);
-
       const user = auth.user!.useTransaction(trx)
 
       const searchPayload = {}
